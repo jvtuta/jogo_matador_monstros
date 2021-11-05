@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projeto Matador de Monstros</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="sections">
+        <!-- Player -->
+        <div class="actors">
+          <span>Jogador</span>
+          <!-- classe criada dinamicamente pelo vue -->
+          <div class="progressBar" :style="progressBarPlayer">
+            {{progressBarPlayer.width}}
+          </div>
+        </div>
+        <!-- Monstro -->
+        <div class="actors">
+          <span>Monstro</span>
+          <!-- classe criada dinamicamente pelo vue -->
+          <div class="progressBar" :style="progressBarMonstro">
+            {{progressBarMonstro.width}}
+          </div>
+        </div>
+      </div>
+      <div class="sections" id="iniciarJogo">
+        <button @click="setStart()">Iniciar novo jogo</button>
+      </div>
+      <template v-if="start">
+        <div class="sections">
+          <!-- Ações -->
+          <div class="buttons" v-if="!win">
+            <button class="red" @click="atacar()">Atacar</button>
+            <button class="yellow" @click="atacar(true)">Ataque especial</button>
+            <button class="green" @click="curar()">Curar</button>
+            <button class="desistir" @click="desistir()">Desistir</button>
+          </div>
+          <div v-if="win" class="win"><button @click="setStart()">Você ganhou! Deseja recomeçar?</button></div>
+        </div>
+        <div class="sections" v-if="logs.length > 0">
+          <!-- Logs -->
+            <template v-for="log in logs">
+                <div class="log-container">
+                    <div class="log log-player" v-if="log.type == 'dano'">Jogador atingiu monstro com {{log.value}} dano</div>
+                    <div class="log log-cura" v-else-if="log.type == 'cura'">Jogador curou-se em {{log.value}} </div>
+                    <div class="log log-especial" v-else>Jogador atingiu monstro com um especial de {{log.value}} dano </div>
+                    <div class="log log-monstro">Monstro atingiu player com  {{log.dano}} dano</div>      
+                </div>
+            </template>
+          
+          
+        </div>
+      </template>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>
